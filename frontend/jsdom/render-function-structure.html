@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Render Function Structure</title>
+  </head>
+  <body>
+    <h1>Items to order</h1>
+    <ul id='items-to-order'></ul>
+
+    <h2>Order</h2>
+    <ul id='order'></ul>
+
+    <script>
+      const state = {
+        items: [
+          {
+            name: "deep fried pizza",
+          },
+          {
+            name: "irn bru",
+          },
+          {
+            name: "deep fried mars bar",
+          },
+        ],
+        order: [],
+      }
+
+      const itemsList = document.querySelector('#items-to-order')
+      const orderList = document.querySelector('#order')
+
+      //Top-level render function - it does EVERYTHING!
+      //It doesn't need to know *what* has changed on the page
+      //it just re-renders everything. This means handling
+      //user interaction is much simpler for us - any time 
+      //something changes, all we need to do is:
+      //
+      // 1. Update the state
+      // 2. Call the render function
+      //
+      //As long as our state is correct - our DOM will be correct.
+      function render() {
+        clear()
+        renderItemsList()
+        renderOrder()
+      }
+
+      //Clear any existing dynamic elements on the page - if 
+      //we don't do this, then we end up with duplicates since
+      //everything get's added again
+      function clear() {
+        //Removing all the li items from the items list ul
+        itemsList.innerHTML = ''
+        //Removing all the li items from the order list ul
+        orderList.innerHTML = ''
+      }
+
+      function renderItemsList() {
+        for(const item of state.items) {
+          const itemEl = document.createElement('li')
+          itemEl.innerText = item.name
+
+          const button = document.createElement('button')
+          button.innerText = 'Add'
+
+          //Add this item to our order
+          button.addEventListener('click', function() {
+            
+            //1. Update the state
+            //Let's check if this item is already ordered - if is, update the quantity
+            const existingOrderItem = state.order.find(i => i.item === item)
+            if(existingOrderItem!==undefined) {
+              existingOrderItem.quantity++
+            }
+            else {
+              state.order.push({
+                quantity: 1,
+                item: item
+              })
+            }
+            
+            //2. Render the page
+            render()
+          })
+
+          itemEl.append(button)
+          itemsList.append(itemEl)
+        }
+      }
+
+      function renderOrder() {
+        for(const orderedItem of state.order) {
+          
+          const orderEl = document.createElement('li')
+          orderEl.innerText = orderedItem.quantity + "x" + orderedItem.item.name
+
+          //Increase quantity
+          const addButton = document.createElement('button')
+          addButton.innerText = "+"
+          addButton.addEventListener('click', function() {
+
+            //1. Update the state
+            orderedItem.quantity++
+
+            //2. Render the DOM
+            render()
+          })
+
+          orderEl.append(addButton)
+
+          //Decrease quantity
+          const removeButton = document.createElement('button')
+          removeButton.innerText = "-"
+          removeButton.addEventListener('click', function() {
+
+            //1. Update the state
+            orderedItem.quantity--
+            //If quantity is 0, remove it from the ordered list
+            if(orderedItem.quantity===0) {
+              const orderItemIndex = state.order.findIndex( i => i===orderedItem)
+              state.order.splice(orderItemIndex,1)
+            }
+
+            //2. Render the DOM
+            render()
+          })
+
+          orderEl.append(removeButton)
+          orderList.append(orderEl)
+        }
+      }
+
+      render()
+
+    </script>
+  </body>
+</html>
