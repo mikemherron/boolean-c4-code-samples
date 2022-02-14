@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Items</title>
+</head>
+<body>
+  <br /><img id='image' />
+  <script>
+    const sports = [
+      { name: 'football', src: 'https://static9.depositphotos.com/1648251/1237/i/600/depositphotos_12379367-stock-photo-goal-goal-goal.jpg'},
+      { name: 'rugby', src: 'https://i.guim.co.uk/img/media/a005d58bd8dfe9de81599e5c4ed9fb1db7e58a1b/218_0_5225_3134/master/5225.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=03c833bdd4476dafbaffe96fce6cb8ed'},
+      { name: 'tennis', src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQHl9xcgR-fF1-VAaXGfQaks_KXpI8BngNBg&usqp=CAU' }
+    ]
+
+    //Create a button for each sport
+    for(const sport of sports) {
+
+      const button  = document.createElement('button')
+      button.innerText = sport.name
+      
+      //Add a click event listener to the button
+      button.addEventListener('click', function(e) {
+      
+        const image = document.querySelector('#image')
+
+        //When we use an inline anonymous function as an event
+        //listener, inside the function we can access all the variables
+        //that were 'visible' at the time the function was defined.
+        //
+        //In this case, we can access the 'src' property of the sport
+        //variable. When the event listener runs, the variable will
+        //have the same value it did when the function was defined.
+        image.src = sport.src
+      })
+
+      document.body.prepend(button)
+    }
+
+  </script>
+</body>
+</html>

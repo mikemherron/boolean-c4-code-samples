@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Removing Child Elements</title>
+</head>
+<body>
+  <h1>Random Numbers</h1>
+  <button id="reset">Reset</button>
+
+  <!-- Random numbers get added here-->
+  <ul id="numbers"></ul>
+
+  <script>
+    const resetButtonEl = document.querySelector('#reset')
+    
+    //Reset the list of numbers when the button is clicked
+    resetButtonEl.addEventListener('click', function() {
+      reset()
+    })
+
+    function reset() {
+      
+      let numbersEl = document.querySelector('#numbers')
+
+      //Before we add the new numbers to the ul element we 
+      //want to remove the existing li children elements.
+      //There are 3 ways we can do this:
+
+      //Method 1 - set innerHTML to a blank string
+      numbersEl.innerHTML = ''
+
+      //Method 2 - remove the parent element (the ul), recreate
+      //it and then add it again.  If you do this, you'll need
+      //to recreate an properties on the element such as CSS
+      //classes and id properties
+      numbersEl.remove()
+      numbersEl = document.createElement('ul')
+      numbersEl.setAttribute('id', 'numbers')
+      document.body.append(numbersEl)
+
+      //Method 3 - iterate through all the children of the element
+      //and remove them 1 by 1.
+      while(numbersEl.firstChild) {
+        numbersEl.firstChild.remove()
+      }
+
+      //Add the new children to the element
+      addRandomNumbers(numbersEl)
+    }
+
+    function addRandomNumbers(numbersEl) {
+      for(let i=0;i<3;i++) {
+        const liElement = document.createElement('li')
+        liElement.innerText = Math.round(Math.random() * 100)
+        numbersEl.append(liElement)
+      }
+    }
+
+    reset()
+
+  </script>
+</body>
+</html>

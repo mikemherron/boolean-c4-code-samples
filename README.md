@@ -1,2 +1,2 @@
 # Boolean Code Samples
-Repository of student 
+Repository of student code samples
