@@ -46,14 +46,13 @@
     }
 
     //Pass in the options object from above
-    //The URL in this case means to update person 4
-    fetch("http://localhost:3000/people/4", options)
+    fetch("http://localhost:3000/people", options)
     .then(function(response) {
       return response.json()
     }).then(function(json) {
       //This is where we do stuff with the response! In this case 
       //we just log it out.
-      console.log("Person updated", json)
+      console.log("Person created", json)
     })
 
     // ********* Make a fetch request to update *only some* fields of a person (PATCH) ********* //
