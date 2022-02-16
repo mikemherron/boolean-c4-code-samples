@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch Examples</title>
+</head>
+<body>
+  
+  <script>
+
+    //`fetch` is a JavaScript function we can use to make HTTP
+    //requests from our JavasScript code. Note that fetch is only
+    //available in the browser right now (it is coming to node.js soon)
+        
+    // ********* Make a fetch request to all people (GET) ********* //
+
+    //By default fetch will make a GET request so we only need to give it
+    //the URL. GET requests do not have a request body.
+    fetch("http://localhost:3000/people")
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      //This is where we do stuff with the response! In this case 
+      //we just log it out
+      console.log("People loaded!", json)
+    })
+
+    
+    // ********* Make a fetch request to add a new person (POST) ********* //
+
+    const options = {
+      // We want to send an HTTP POST (GET is the default for fetch)
+      method: 'POST', 
+      //We need to tell the server we are sending JSON
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      //Specify the request body: the data we want to send with the request. In this
+      //case we are send a JavaScript object as a JSON string using JSON.stringify
+      body: JSON.stringify({
+        age: 12,
+        name: 'Another person'
+      })
+    }
+
+    //Pass in the options object from above
+    //The URL in this case means to update person 4
+    fetch("http://localhost:3000/people/4", options)
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      //This is where we do stuff with the response! In this case 
+      //we just log it out.
+      console.log("Person updated", json)
+    })
+
+    // ********* Make a fetch request to update *only some* fields of a person (PATCH) ********* //
+
+    const options = {
+      // We want to send an HTTP PATCH request
+      method: 'PATCH', 
+      //We need to tell the server we are sending JSON
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+
+      //Specify the request body: the data we want to send with the request. In this
+      //case we are only wanting to update the 'age' property of the person so this
+      //is all we specify. Using REST, PATCH only updates some properties of the
+      //resource.
+      //
+      //Note: We don't need to specify the ID! that is part of the URL
+      body: JSON.stringify({
+        age: 12,
+      })
+    }
+
+    //Pass in the options object from above
+    //The URL in this case means to update person 4
+    fetch("http://localhost:3000/people/4", options)
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      //This is where we do stuff with the response! In this case 
+      //we just log it out.
+      console.log("Person updated", json)
+    })
+
+    // ********* Make a fetch request to update *all* fields of a person (PUT) ********* //
+
+    const options = {
+      // We want to send an HTTP PUT request
+      method: 'PUT', 
+      //We need to tell the server we are sending JSON
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+
+      //Specify the request body: the data we want to send with the request. In this
+      //case we are using PUT which replaces the entire resource, so we specify all
+      //properties. 
+      //
+      //Note: We don't need to specify the ID! that is part of the URL
+      body: JSON.stringify({
+        age: 22,
+        name: 'Updated Name'
+      })
+    }
+
+    //The URL in this case means to update person 4
+    fetch("http://localhost:3000/people/4", options)
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      //This is where we do stuff with the response! In this case 
+      //we just log it out.
+      console.log("Person updated", json)
+    })
+    
+     // ********* Make a fetch request to delete a person (DELETE) ********* //
+
+    const options = {
+      // We want to send an HTTP DELETE
+      method: 'DELETE', 
+
+      //A DELETE request has no request body - using REST, we identify we resource
+      //we want to delete via the URL. So we don't need to specify the other options
+      //here
+    }
+
+    //The URL in this case means to delete person 4
+    fetch("http://localhost:3000/people/4", options)
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      //This is where we do stuff with the response! In this case 
+      //we just log it out.
+      console.log("Person deleted", json)
+    })
+
+  </script>
+
+</body>
+</html>
